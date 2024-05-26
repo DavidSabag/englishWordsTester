@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>English words tester</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>    
+</head>
+<body>
+    <div class="container">
+        <h2>Test valid english words</h2>
+        <input class="txt-input" type="text" placeholder="Enter word"/>
+        <button onclick="testWord()">Test</button>
+    </div>
+
+    <label class="msg"></label>
+</body>
+<script>
+    async function testWord(){
+        const word = document.querySelector('.txt-input').value;
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ word })
+
+        }
+        const res = await fetch('http://localhost:8080/job-check', options);
+        const { exist } = await res.json()
+        
+        document.querySelector('.msg').innerHTML = exist? ' The word exist in english': 'The word does not exist in english'
+        document.querySelector('.txt-input').value = "";
+    }    
+
+</script>
+</html>

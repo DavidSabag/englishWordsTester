@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  db:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017  
+
+
+  job-check-service: #be
+    image: davidsbg11/job-check:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db    
+ 
+
+  api-service: #fe
+    image: 'davidsbg11/api:v1'
+    ports:
+      - "80:80"
+    build:
+      context: ../api/
+      dockerfile: Dockerfile
+
+
+
+volumes:
+  mongo_data:    
+
